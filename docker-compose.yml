@@ -1,0 +1,10 @@
+services:  
+  copart-parser:
+    container_name: simple-server-status
+    restart: unless-stopped
+    network_mode: "host"
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./app:/app
