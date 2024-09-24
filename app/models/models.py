@@ -1,7 +1,6 @@
 from dataclasses import dataclass
-from dataclasses import field
 from datetime import datetime
-from datetime import timezone
+from datetime import timedelta
 
 
 @dataclass(frozen=True)
@@ -9,15 +8,19 @@ class CpuInfo:
     model: str
     cores: int
     threads: int
-    load: str
+    load_1: float
+    load_5: float
+    load_15: float
+    percent: float
+    active_processes: int
+    total_processes: int
     freq: float
     
 @dataclass(frozen=True)
-class MemInfo:
+class RamInfo:
     total: int
-    available: int
     used: int
-    free: int
+    available: int
     percent: float
     
 @dataclass(frozen=True)
@@ -28,11 +31,19 @@ class SwapInfo:
     percent: float
     
 @dataclass(frozen=True)
+class StorageInfo:
+    total: int
+    used: int
+    free: int
+    percent: float
+    mountpoint: str
+
+@dataclass(frozen=True)
 class SysInfo:
     created_at: datetime
-    uptime: str
-    uptime_pretty: str
+    started_at: datetime
+    uptime: timedelta
     cpu: CpuInfo
-    memory: MemInfo
+    ram: RamInfo
+    storage: StorageInfo
     swap: SwapInfo
-    processes: list[str]

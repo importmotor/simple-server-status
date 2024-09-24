@@ -10,9 +10,9 @@ from utils.config import CONFIG
 async def check_token(req: Request) -> str:
     global CONFIG
     
-    user_token = req.headers.get('x-access-token')
+    user_token = req.query_params.get('key')
     if user_token != CONFIG.ACCESS_TOKEN:
-        raise HTTPException(status_code=403, detail="x-access-token header is invalid")
+        raise HTTPException(status_code=403, detail="key is invalid")
     
     return user_token
 
