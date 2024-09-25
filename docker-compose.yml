@@ -2,9 +2,11 @@ services:
   copart-parser:
     container_name: simple-server-status
     restart: unless-stopped
-    network_mode: "host"
     build: .
+    ports:
+      - "${PORT}:8000"
     environment:
       - PYTHONUNBUFFERED=1
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
     volumes:
       - ./app:/app
