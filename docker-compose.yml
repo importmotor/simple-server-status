@@ -8,5 +8,6 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - SERVER_NAME=${SERVER_NAME}
     volumes:
       - ./app:/app

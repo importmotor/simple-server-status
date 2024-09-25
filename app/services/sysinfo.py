@@ -9,6 +9,7 @@ from models.models import SwapInfo
 from models.models import StorageInfo
 from models.models import SysInfo
 from utils import helpers
+from utils.config import CONFIG
 
  
 def get_cpu_info() -> CpuInfo:
@@ -119,6 +120,7 @@ def get_sys_info() -> SysInfo:
     
     
     return SysInfo(
+        server_name=CONFIG.SERVER_NAME,
         created_at=datetime.now(timezone.utc),
         started_at=datetime.fromtimestamp(psutil.boot_time(), timezone.utc),
         uptime=timedelta(seconds=uptime_seconds),

@@ -40,6 +40,7 @@ class StorageInfo:
 
 @dataclass(frozen=True)
 class SysInfo:
+    server_name: str
     created_at: datetime
     started_at: datetime
     uptime: timedelta
