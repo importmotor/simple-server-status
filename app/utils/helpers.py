@@ -10,6 +10,7 @@ def get_int(string: str) -> int:
     return int(digits_str)
 
 def get_float(string: str) -> float:
+    string = string.replace(",", ".")
     allowed_chars = digits + "."
     return float(''.join([char for char in string if char in allowed_chars]))
 

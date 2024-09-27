@@ -12,7 +12,7 @@ from utils import helpers
 from utils.config import CONFIG
 
  
-def get_cpu_info() -> CpuInfo:
+def get_cpu_info(collectin_time: float) -> CpuInfo:
     raw_cpu_info = helpers.read_lines('/proc/cpuinfo')
     load_avg = helpers.read_file('/proc/loadavg')
     
@@ -45,7 +45,7 @@ def get_cpu_info() -> CpuInfo:
         load_1=load_1,
         load_5=load_5,
         load_15=load_15,
-        percent=psutil.cpu_percent(interval=0.2),
+        percent=psutil.cpu_percent(interval=collectin_time),
         active_processes=active_processes,
         total_processes=total_processes,
         freq=cpu_freq,
@@ -99,32 +99,32 @@ def get_storage_info() -> StorageInfo:
     raw_storage_info_split = raw_storage_info_line.split()
     if len(raw_storage_info_split) != 6:
         return StorageInfo(
-            total=0,
-            used=0,
-            free=0,
-            percent=0,
+            total=0.,
+            used=0.,
+            free=0.,
+            percent=0.,
             mountpoint=mount_point,
         )
     
     return StorageInfo(
-        total=helpers.get_int(raw_storage_info_split[1]),
-        used=helpers.get_int(raw_storage_info_split[2]),
-        free=helpers.get_int(raw_storage_info_split[3]),
-        percent=helpers.get_int(raw_storage_info_split[4]),
+        total=helpers.get_float(raw_storage_info_split[1]),
+        used=helpers.get_float(raw_storage_info_split[2]),
+        free=helpers.get_float(raw_storage_info_split[3]),
+        percent=helpers.get_float(raw_storage_info_split[4]),
         mountpoint=mount_point,
     )
     
-def get_sys_info() -> SysInfo:
+def get_sys_info(cpu_info_collection_time: float = 0.2) -> SysInfo:
     uptime = helpers.read_lines('/proc/uptime')
     uptime_seconds = int(float(uptime[0].split()[0]))
-    
+    cpu_info = get_cpu_info(cpu_info_collection_time)
     
     return SysInfo(
         server_name=CONFIG.SERVER_NAME,
         created_at=datetime.now(timezone.utc),
         started_at=datetime.fromtimestamp(psutil.boot_time(), timezone.utc),
         uptime=timedelta(seconds=uptime_seconds),
-        cpu=get_cpu_info(),
+        cpu=cpu_info,
         ram=get_mem_info(),
         storage=get_storage_info(),
         swap=get_swap_info(),
